@@ -1,0 +1,54 @@
+/* Variables */
+:root {
+    :root {
+        --red1: hsl(3, 89%, 66%);
+        --red2: hsl(3, 89%, 56%);
+        --red3: hsl(3, 89%, 46%);
+        --green1: hsl(142, 100%, 64%);
+        --green2: hsl(142, 100%, 54%);
+        --green3: hsl(142, 100%, 44%);
+        --blue1: hsl(207, 100%, 64%);
+        --blue2: hsl(207, 100%, 54%);
+        --blue3: hsl(207, 100%, 44%);
+    }
+}
+/* Fonts */
+@font-face {
+    font-family: Adventure;
+    src: url(/fonts/AdventureRequest-j8W9.ttf);
+}
+@font-face {
+    font-family: Pixel;
+    src: url(/fonts/PixeloidSans-mLxMm.ttf);
+}
+@font-face {
+    font-family: Stepalange;
+    src: url(/fonts/Stepalange-x3BLm.otf);
+}
+body {
+    height: 100svh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#townGrid {
+    width: clamp(100px, 100%, 350px);
+    display: grid;
+    justify-items: center;
+}
+.tile {
+    background-image: url(/assets/grass.png);
+    background-size: cover;
+    border: 1px solid black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+}
