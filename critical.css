@@ -27,19 +27,24 @@
 }
 body {
     height: 100svh;
-    overflow: hidden;
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 0 5%;
+    padding: 0;
 }
 
 #townGrid {
-    width: clamp(100px, 100%, 350px);
+    width: 100%;
+    height: auto;
+    max-width: 400px;
     display: grid;
     justify-items: center;
 }
 .tile {
+    box-sizing: border-box;
     background-image: url(/assets/grass.png);
     background-size: cover;
     border: 1px solid black;
