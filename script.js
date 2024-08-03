@@ -1,6 +1,6 @@
 const townGrid = document.getElementById('townGrid');
 let tileStates = [];
-let gridWidth = 9;
+let gridWidth = 8;
 let gridHeight = 12;
 let totalTiles = (gridWidth * gridHeight);
 let gridWidthId = gridWidth - 1;
