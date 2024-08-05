@@ -32,22 +32,48 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 0 5%;
+    margin: 0;
     padding: 0;
+    background: rgb(18, 138, 18);
+}
+@media only screen and (min-width: 600px) {
+    body {
+        flex-direction: row;
+    }
 }
 
 #townGrid {
     width: 100%;
     height: auto;
-    max-width: 400px;
+    max-width: 500px;
     display: grid;
     justify-items: center;
 }
+
+#toolBox {
+    display: flex;
+    width: 80%;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    font-size: larger;
+    font-family: Pixel;
+}
+
+.tool-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tool-group input {
+    transform: scale(1.5);
+}
+
 .tile {
     box-sizing: border-box;
-    background-image: url(/assets/grass.png);
     background-size: cover;
-    border: 1px solid black;
+    border: 1px solid rgb(66, 66, 66);
     color: white;
     display: flex;
     align-items: center;
@@ -56,4 +82,9 @@ body {
     width: 100%;
     aspect-ratio: 1 / 1;
     cursor: pointer;
+}
+
+.hidden {
+    opacity: 0%;
+    cursor: auto;
 }
