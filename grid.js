@@ -4,7 +4,7 @@ for (i = 0; i < gridSize; i++) {
     const tile = document.createElement('img');
     tile.classList.add('tile');
     tile.id = i;
-    tile.src = "/assets/grass.png"
+    tile.src = "assets/grass.png"
     tiles.push(new Tile(i, false, false, false));
 
     //Series of conditions to detect perimeter
