@@ -1,5 +1,5 @@
 //Initializes variables
-let tools = ["Path", "Remove"];
+let tools = ["Path", "Tree", "Remove"];
 let gridWidth = 10; //Visible grid width is gridWdith - 2
 let gridHeight = 14; //Visible grid height is gridHeight - 2
 let currentTool = "Path";
@@ -14,9 +14,10 @@ townGrid.style.gridTemplateRows = `repeat(${gridHeight}, 1fr)`;
 
 //Tile class
 class Tile {
-    constructor(id, paved, perimeter) {
+    constructor(id, paved, tree, perimeter) {
         this.id = id;
         this.paved = paved;
+        this.tree = tree;
         this.perimeter = perimeter;
     }
 }
@@ -53,7 +54,7 @@ for (i = 0; i < gridSize; i++) {
     tile.classList.add('tile');
     tile.id = i;
     tile.src = "assets/grass.png"
-    tiles.push(new Tile(i, false, false));
+    tiles.push(new Tile(i, false, false, false));
 
     //Series of conditions to detect perimeter
     if (tile.id < gridWidth ||
@@ -87,18 +88,24 @@ function UseTool(id) {
         switch(currentTool) {
             case "Path":
                 if (!tiles[id].paved) {
-                    tiles[id].water = false;
+                    tiles[id].tree = false;
                     tiles[id].paved = true;
                 }
                 break;
+            case "Tree":
+                if (!tiles[id].tree) {
+                    tiles[id].tree = true;
+                    tiles[id].paved = false;
+                }
+                break;
             case "Remove":
-                if (tiles[id].paved || tiles[id].water) {
-                    tiles[id].water = false;
+                if (tiles[id].paved || tiles[id].tree) {
+                    tiles[id].tree = false;
                     tiles[id].paved = false;
                 }
                 break;
         }
-        console.log(id);
+        console.log(tiles[id]);
         UpdateTiles();
 }
 
@@ -109,8 +116,15 @@ function UpdateTiles() {
 
         if (!tiles[i].perimeter) {
             //Set grass
-            if (!tiles[i].paved) {
+            if (!tiles[i].paved && !tiles[i].tree) {
                 tile.src = "assets/grass.png";
+                continue;
+            }
+
+            //Set trees
+            if (tiles[i].tree) {
+                tile.src = "assets/tree.png";
+                console.log(tiles[i].tree);
                 continue;
             }
 
@@ -131,59 +145,61 @@ function UpdateTiles() {
                 }
             }
             let stateArray = neighborStates.toString();
-            if (i == 40) {console.log(stateArray)};
 
-            //Update paths
-            switch(stateArray) {
-                case "0,0,0,0":
-                    tile.src = "assets/path/alone.png";
-                    break;
-                case "0,0,0,1":
-                    tile.src = "assets/path/D.png";
-                    break;
-                case "0,0,1,0":
-                    tile.src = "assets/path/R.png";
-                    break;
-                case "0,0,1,1":
-                    tile.src = "assets/path/RD.png";
-                    break;
-                case "0,1,0,0":
-                    tile.src = "assets/path/U.png";
-                    break;
-                case "0,1,0,1":
-                    tile.src = "assets/path/UD.png";
-                    break;
-                case "0,1,1,0":
-                    tile.src = "assets/path/UR.png";
-                    break;
-                case "0,1,1,1":
-                    tile.src = "assets/path/URD.png";
-                    break;
-                case "1,0,0,0":
-                    tile.src = "assets/path/L.png";
-                    break;
-                case "1,0,0,1":
-                    tile.src = "assets/path/LD.png";
-                    break;
-                case "1,0,1,0":
-                    tile.src = "assets/path/LR.png";
-                    break;
-                case "1,0,1,1":
-                    tile.src = "assets/path/LRD.png";
-                    break;
-                case "1,1,0,0":
-                    tile.src = "assets/path/LU.png";
-                    break;
-                case "1,1,0,1":
-                    tile.src = "assets/path/LUD.png";
-                    break;
-                case "1,1,1,0":
-                    tile.src = "assets/path/LUR.png";
-                    break;
-                case "1,1,1,1":
-                    tile.src = "assets/path/cross.png";
-                    break;
-                }        
+            //Set paths
+            if (tiles[i].paved) {
+                switch(stateArray) {
+                    case "0,0,0,0":
+                        tile.src = "assets/path/alone.png";
+                        break;
+                    case "0,0,0,1":
+                        tile.src = "assets/path/D.png";
+                        break;
+                    case "0,0,1,0":
+                        tile.src = "assets/path/R.png";
+                        break;
+                    case "0,0,1,1":
+                        tile.src = "assets/path/RD.png";
+                        break;
+                    case "0,1,0,0":
+                        tile.src = "assets/path/U.png";
+                        break;
+                    case "0,1,0,1":
+                        tile.src = "assets/path/UD.png";
+                        break;
+                    case "0,1,1,0":
+                        tile.src = "assets/path/UR.png";
+                        break;
+                    case "0,1,1,1":
+                        tile.src = "assets/path/URD.png";
+                        break;
+                    case "1,0,0,0":
+                        tile.src = "assets/path/L.png";
+                        break;
+                    case "1,0,0,1":
+                        tile.src = "assets/path/LD.png";
+                        break;
+                    case "1,0,1,0":
+                        tile.src = "assets/path/LR.png";
+                        break;
+                    case "1,0,1,1":
+                        tile.src = "assets/path/LRD.png";
+                        break;
+                    case "1,1,0,0":
+                        tile.src = "assets/path/LU.png";
+                        break;
+                    case "1,1,0,1":
+                        tile.src = "assets/path/LUD.png";
+                        break;
+                    case "1,1,1,0":
+                        tile.src = "assets/path/LUR.png";
+                        break;
+                    case "1,1,1,1":
+                        tile.src = "assets/path/cross.png";
+                        break;
+                    }
+                }
+            //Update paths        
         }        
     }
 }
