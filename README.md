@@ -12,7 +12,7 @@ My initial commit. Added infrastructure for tile updates and paving. Temporary a
 ### Version 0.2
 Minor CSS changes to make the grid more responsive.
 
-### Versoin 0.3
+### Version 0.3
 Added a configurable grid height and width variables and updated the infrastructure so that the size of the grid can be changed directly in the script by changing the variables.
 This allows for easier testing of different grid sizes.
 
