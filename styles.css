@@ -1,30 +1,13 @@
-/* Variables */
-:root {
-    :root {
-        --red1: hsl(3, 89%, 66%);
-        --red2: hsl(3, 89%, 56%);
-        --red3: hsl(3, 89%, 46%);
-        --green1: hsl(142, 100%, 64%);
-        --green2: hsl(142, 100%, 54%);
-        --green3: hsl(142, 100%, 44%);
-        --blue1: hsl(207, 100%, 64%);
-        --blue2: hsl(207, 100%, 54%);
-        --blue3: hsl(207, 100%, 44%);
-    }
-}
-/* Fonts */
-@font-face {
-    font-family: Adventure;
-    src: url(/fonts/AdventureRequest-j8W9.ttf);
-}
-@font-face {
-    font-family: Pixel;
-    src: url(/fonts/PixeloidSans-mLxMm.ttf);
-}
 @font-face {
     font-family: Stepalange;
     src: url(/fonts/Stepalange-x3BLm.otf);
 }
+
+@keyframes fadeUp {
+    0% {opacity: 0%; transform: translate(0, 20px);}
+    100% {opacity: 100%; transform: translate(0, 0);}
+}
+
 body {
     height: 100svh;
     overflow-y: hidden;
@@ -36,12 +19,13 @@ body {
     padding: 0;
     background: rgb(18, 138, 18);
 }
-@media only screen and (min-width: 600px) {
-    body {
-        flex-direction: row;
-    }
-}
 
+h1 {
+    color: white;
+    font-family: Stepalange;
+    margin: 0;
+    animation: fadeUp 1s;
+}
 #townGrid {
     width: 100%;
     height: auto;
@@ -52,12 +36,14 @@ body {
 
 #toolBox {
     display: flex;
-    width: 80%;
+    width: 75%;
+    padding: 0.5rem;
     align-items: center;
     justify-content: space-around;
     color: white;
-    font-size: larger;
-    font-family: Pixel;
+    font-size: 1.5rem;
+    font-family: Stepalange, Arial, Helvetica, sans-serif;
+    background: linear-gradient(rgb(80, 80, 80), rgb(25, 25, 25));
 }
 
 .tool-group {
@@ -67,13 +53,16 @@ body {
 }
 
 .tool-group input {
-    transform: scale(1.5);
+    transform: scale(2);
+    margin: 0 10px;
+    accent-color: brown;
+    cursor: pointer;
 }
 
 .tile {
     box-sizing: border-box;
     background-size: cover;
-    border: 1px solid rgb(66, 66, 66);
+    border: 1px dotted hsl(0, 0%, 36%, 50%);
     color: white;
     display: flex;
     align-items: center;
@@ -87,4 +76,17 @@ body {
 .hidden {
     opacity: 0%;
     cursor: auto;
+}
+
+@media only screen and (min-width: 600px) {
+    body {
+        flex-direction: row;
+    }
+    #toolBox {
+        flex-direction: column;
+        width: 20%;
+    }
+    .tool-group {
+        margin: 0.5rem 0;
+    }
 }
