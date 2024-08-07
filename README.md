@@ -43,3 +43,8 @@ each possible combination of neighbor states.
 
 ### Version 0.6
 Added a tree tool with a single tree texture. Plan to add more textures in the future for random generation.
+
+### Version 0.7
+Added a water tool to craft riverways. Currently pondering ways to expand the neighbor array to account for diagonal
+neighbors in addition to orthogonal ones to allow for double-wide paths and waterways. The number of possible combination
+of eight variables proves to be challenging in terms of scope. 256 cases versus 16 with the current model.

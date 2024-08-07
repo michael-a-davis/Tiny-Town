@@ -1,5 +1,5 @@
 //Initializes variables
-let tools = ["Path", "Tree", "Remove"];
+let tools = ["Path", "Tree", "Water", "Remove"];
 let gridWidth = 10; //Visible grid width is gridWdith - 2
 let gridHeight = 14; //Visible grid height is gridHeight - 2
 let currentTool = "Path";
@@ -14,10 +14,11 @@ townGrid.style.gridTemplateRows = `repeat(${gridHeight}, 1fr)`;
 
 //Tile class
 class Tile {
-    constructor(id, paved, tree, perimeter) {
+    constructor(id, paved, tree, water, perimeter) {
         this.id = id;
         this.paved = paved;
         this.tree = tree;
+        this.water = water;
         this.perimeter = perimeter;
     }
 }
@@ -54,7 +55,7 @@ for (i = 0; i < gridSize; i++) {
     tile.classList.add('tile');
     tile.id = i;
     tile.src = "assets/grass.png"
-    tiles.push(new Tile(i, false, false, false));
+    tiles.push(new Tile(i, false, false, false, false));
 
     //Series of conditions to detect perimeter
     if (tile.id < gridWidth ||
@@ -71,6 +72,7 @@ for (i = 0; i < gridSize; i++) {
     //Hides perimeter tiles, otherwise add event listener
     if (tiles[i].perimeter) {
         tiles[i].paved = true;
+        tiles[i].water = true;
         tile.classList.add('hidden');
     } else {
         tile.addEventListener('click', function(){
@@ -90,18 +92,28 @@ function UseTool(id) {
                 if (!tiles[id].paved) {
                     tiles[id].tree = false;
                     tiles[id].paved = true;
+                    tiles[id].water = false;
                 }
                 break;
             case "Tree":
                 if (!tiles[id].tree) {
                     tiles[id].tree = true;
                     tiles[id].paved = false;
+                    tiles[id].water = false;
+                }
+                break;
+            case "Water":
+                if (!tiles[id].water) {
+                    tiles[id].tree = false;
+                    tiles[id].paved = false;
+                    tiles[id].water = true;
                 }
                 break;
             case "Remove":
-                if (tiles[id].paved || tiles[id].tree) {
+                if (tiles[id].paved || tiles[id].tree || tiles[id].water) {
                     tiles[id].tree = false;
                     tiles[id].paved = false;
+                    tiles[id].water = false;
                 }
                 break;
         }
@@ -116,7 +128,7 @@ function UpdateTiles() {
 
         if (!tiles[i].perimeter) {
             //Set grass
-            if (!tiles[i].paved && !tiles[i].tree) {
+            if (!tiles[i].paved && !tiles[i].tree && !tiles[i].water) {
                 tile.src = "assets/grass.png";
                 continue;
             }
@@ -128,26 +140,9 @@ function UpdateTiles() {
                 continue;
             }
 
-            //Find and assess neighbor tiles to generate state array
-            let neighborIds = [
-                i - 1, //Left
-                i - gridWidth, //Above
-                i + 1, //Right
-                i + gridWidth, //Below
-            ]
-            let neighborStates = [];
-            for (j = 0; j < neighborIds.length; j++) {
-                if (tiles[neighborIds[j]].paved) {
-                    neighborStates.push(1);
-                }
-                else {
-                    neighborStates.push(0);
-                }
-            }
-            let stateArray = neighborStates.toString();
-
             //Set paths
             if (tiles[i].paved) {
+                let stateArray = AssessNeighbors("Path", i);
                 switch(stateArray) {
                     case "0,0,0,0":
                         tile.src = "assets/path/alone.png";
@@ -197,9 +192,97 @@ function UpdateTiles() {
                     case "1,1,1,1":
                         tile.src = "assets/path/cross.png";
                         break;
-                    }
                 }
-            //Update paths        
+                continue;
+            }
+                
+                //Set Water
+                if (tiles[i].water) {
+                    let stateArray = AssessNeighbors("Water", i);
+                    switch(stateArray) {
+                        case "0,0,0,0":
+                            tile.src = "assets/water/alone.png";
+                            break;
+                        case "0,0,0,1":
+                            tile.src = "assets/water/D.png";
+                            break;
+                        case "0,0,1,0":
+                            tile.src = "assets/water/R.png";
+                            break;
+                        case "0,0,1,1":
+                            tile.src = "assets/water/RD.png";
+                            break;
+                        case "0,1,0,0":
+                            tile.src = "assets/water/U.png";
+                            break;
+                        case "0,1,0,1":
+                            tile.src = "assets/water/UD.png";
+                            break;
+                        case "0,1,1,0":
+                            tile.src = "assets/water/UR.png";
+                            break;
+                        case "0,1,1,1":
+                            tile.src = "assets/water/URD.png";
+                            break;
+                        case "1,0,0,0":
+                            tile.src = "assets/water/L.png";
+                            break;
+                        case "1,0,0,1":
+                            tile.src = "assets/water/LD.png";
+                            break;
+                        case "1,0,1,0":
+                            tile.src = "assets/water/LR.png";
+                            break;
+                        case "1,0,1,1":
+                            tile.src = "assets/water/LRD.png";
+                            break;
+                        case "1,1,0,0":
+                            tile.src = "assets/water/LU.png";
+                            break;
+                        case "1,1,0,1":
+                            tile.src = "assets/water/LUD.png";
+                            break;
+                        case "1,1,1,0":
+                            tile.src = "assets/water/LUR.png";
+                            break;
+                        case "1,1,1,1":
+                            tile.src = "assets/water/cross.png";
+                            break;
+                }
+            } 
         }        
+    }
+}
+
+function AssessNeighbors(tool, i) {
+    let neighborIds = [
+        i - 1, //Left
+        i - gridWidth, //Above
+        i + 1, //Right
+        i + gridWidth, //Below
+    ]
+    let neighborStates = [];
+
+    switch(tool) {
+        case "Path":
+            for (j = 0; j < neighborIds.length; j++) {
+                if (tiles[neighborIds[j]].paved) {
+                    neighborStates.push(1);
+                }
+                else {
+                    neighborStates.push(0);
+                }
+            }
+            return neighborStates.toString();
+        case "Water":
+            for (j = 0; j < neighborIds.length; j++) {
+                if (tiles[neighborIds[j]].water) {
+                    neighborStates.push(1);
+                }
+                else {
+                    neighborStates.push(0);
+                }
+            }
+            return neighborStates.toString();
     }
 }

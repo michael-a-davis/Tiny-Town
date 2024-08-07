@@ -36,6 +36,7 @@ h1 {
 
 #toolBox {
     display: flex;
+    flex-wrap: wrap;
     width: 75%;
     padding: 0.5rem;
     align-items: center;
